@@ -25,6 +25,8 @@ import * as VideoThumbnails from 'expo-video-thumbnails';
 
 Create an image thumbnail from video provided via `uri`.
 
+> **Note** In case `uri` is a remote `uri`, the video will be temporary downloaded.
+
 #### Arguments
 
 - **uri (_string_)** -- URI of the video.
