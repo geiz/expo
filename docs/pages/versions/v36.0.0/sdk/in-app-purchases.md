@@ -70,8 +70,8 @@ A `Promise` that resolves with an `IAPQueryResponse` that contains an array of `
 #### Example
 
 ```javascript
-const history = await connectAsync();
-if (history.responseCode === IAPResponseCode.OK) {
+const history = await InAppPurchases.connectAsync();
+if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
   history.results.forEach(result => {
     // Restore history if needed
   });
@@ -112,8 +112,8 @@ const items = Platform.select({
 });
 
 // Retrieve product details
-const { responseCode, results } = await getProductsAsync(items);
-if (responseCode === IAPResponseCode.OK) {
+const { responseCode, results } = await InAppPurchases.getProductsAsync(items);
+if (responseCode === InAppPurchases.IAPResponseCode.OK) {
   this.setState({ items: results });
 }
 ```
@@ -134,9 +134,9 @@ Purchases can either be instantiated by the user (via `purchaseItemAsync`) or th
 
 ```javascript
 // Set purchase listener
-setPurchaseListener(({ responseCode, results, errorCode }) => {
+setPurchaseListener = ({ responseCode, results, errorCode }) => {
   // Purchase was successful
-  if (responseCode === IAPResponseCode.OK) {
+  if (responseCode === InAppPurchases.IAPResponseCode.OK) {
     results.forEach(purchase => {
       if (!purchase.acknowledged) {
         console.log(`Successfully purchased ${purchase.productId}`);
@@ -149,9 +149,9 @@ setPurchaseListener(({ responseCode, results, errorCode }) => {
   }
 
   // Else find out what went wrong
-  if (responseCode === IAPResponseCode.USER_CANCELED) {
+  if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
     console.log('User canceled the transaction');
-  } else if (responseCode === IAPResponseCode.DEFERRED) {
+  } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
     console.log('User does not have permissions to buy but requested parental approval (iOS only)');
   } else {
     console.warn(`Something went wrong with the purchase. Received errorCode ${errorCode}`);
@@ -186,7 +186,7 @@ renderItem(item) {
         <View key={item.productId}>
             ...
             <View style={styles.buttonContainer}>
-                <Button title="Buy" onPress={() => purchaseItemAsync(item.productId)} />
+                <Button title="Buy" onPress={() => InAppPurchases.purchaseItemAsync(item.productId)} />
             </View>
             ...
         </View>
@@ -242,8 +242,8 @@ A `Promise` that resolves with an `IAPQueryResponse` that contains an array of `
 #### Example
 
 ```javascript
-const { responseCode, results } = await getPurchaseHistoryAsync();
-if (responseCode === IAPResponseCode.OK) {
+const { responseCode, results } = await InAppPurchases.getPurchaseHistoryAsync();
+if (responseCode === InAppPurchases.IAPResponseCode.OK) {
   results.forEach(result => {
     // Handle purchase history
   });
@@ -265,8 +265,8 @@ A `Promise` that resolves with an integer representing the `IAPResponseCode`.
 #### Example
 
 ```javascript
-const responseCode = await getBillingResponseCodeAsync();
-if (responseCode !== IAPResponseCode.OK) {
+const responseCode = await InAppPurchases.getBillingResponseCodeAsync();
+if (responseCode !== InAppPurchases.IAPResponseCode.OK) {
   // Either we're not connected or the last response returned an error (Android)
 }
 ```
