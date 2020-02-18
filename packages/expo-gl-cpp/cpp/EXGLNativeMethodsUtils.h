@@ -13,6 +13,8 @@
 #include <jsi/jsi.h>
 #include <type_traits>
 
+#include "EXJSIUtils.h"
+
 namespace jsi = facebook::jsi;
 
 //
@@ -34,9 +36,13 @@ inline constexpr bool is_integral_v =
     std::is_integral_v<T> && !std::is_same_v<bool, T> && !std::is_same_v<GLboolean, T>;
 
 template <typename T>
-inline std::enable_if_t<!(is_integral_v<T> || std::is_floating_point_v<T>), T> unpackArg(
-    jsi::Runtime &runtime,
-    const jsi::Value *jsArgv);
+inline constexpr bool is_supported_vector = std::is_same_v<std::vector<uint32_t>, T> ||
+    std::is_same_v<std::vector<int32_t>, T> || std::is_same_v<std::vector<float>, T>;
+
+template <typename T>
+inline std::
+    enable_if_t<!(is_integral_v<T> || std::is_floating_point_v<T> || is_supported_vector<T>), T>
+    unpackArg(jsi::Runtime &runtime, const jsi::Value *jsArgv);
 
 //
 // unpackArgs explicit specializations
@@ -78,31 +84,31 @@ inline const jsi::Value &unpackArg<const jsi::Value &>(
 
 template <>
 inline std::string unpackArg<std::string>(jsi::Runtime &runtime, const jsi::Value *jsArgv) {
-  return jsArgv->getString(runtime).utf8(runtime);
+  return jsArgv->asString(runtime).utf8(runtime);
 }
 
 template <>
 inline jsi::Object unpackArg<jsi::Object>(jsi::Runtime &runtime, const jsi::Value *jsArgv) {
-  return jsArgv->getObject(runtime);
+  return jsArgv->asObject(runtime);
 }
 
 template <>
 inline jsi::Array unpackArg<jsi::Array>(jsi::Runtime &runtime, const jsi::Value *jsArgv) {
-  return jsArgv->getObject(runtime).getArray(runtime);
+  return jsArgv->asObject(runtime).asArray(runtime);
 }
 
 template <>
 inline jsi::TypedArrayBase unpackArg<jsi::TypedArrayBase>(
     jsi::Runtime &runtime,
     const jsi::Value *jsArgv) {
-  return jsArgv->getObject(runtime).getTypedArray(runtime);
+  return jsArgv->asObject(runtime).asTypedArray(runtime);
 }
 
 template <>
 inline jsi::ArrayBuffer unpackArg<jsi::ArrayBuffer>(
     jsi::Runtime &runtime,
     const jsi::Value *jsArgv) {
-  return jsArgv->getObject(runtime).getArrayBuffer(runtime);
+  return jsArgv->asObject(runtime).asArrayBuffer(runtime);
 }
 
 //
@@ -136,14 +142,34 @@ inline std::enable_if_t<std::is_floating_point_v<T>, T> unpackArg(
   return jsArgv->asNumber();
 }
 
+template <typename T>
+inline std::enable_if_t<is_supported_vector<T>, T> unpackArg(
+    jsi::Runtime &runtime,
+    const jsi::Value *jsArgv) {
+  auto jsObj = jsArgv->asObject(runtime);
+  if (jsObj.isArray(runtime)) {
+    return jsArrayToVector<typename T::value_type>(runtime, jsObj.asArray(runtime));
+  } else if (jsObj.isTypedArray(runtime)) {
+    if constexpr (std::is_same_v<typename T::value_type, uint32_t>) {
+      return jsObj.asTypedArray(runtime).as<jsi::TypedArrayKind::Uint32Array>(runtime).data(
+          runtime);
+    } else if constexpr (std::is_same_v<typename T::value_type, int32_t>) {
+      return jsObj.asTypedArray(runtime).as<jsi::TypedArrayKind::Int32Array>(runtime).data(runtime);
+    } else if constexpr (std::is_same_v<typename T::value_type, float>) {
+      return jsObj.asTypedArray(runtime).as<jsi::TypedArrayKind::Float32Array>(runtime).data(
+          runtime);
+    }
+  }
+  throw std::runtime_error("unsupported type");
+}
+
 template <jsi::TypedArrayKind T>
 inline jsi::TypedArray<T> unpackArg(jsi::Runtime &runtime, const jsi::Value *jsArgv) {
-  return jsArgv->getObject(runtime).getTypedArray(runtime).as<T>(runtime);
+  return jsArgv->asObject(runtime).asTypedArray(runtime).as<T>(runtime);
 }
 
 // set of private helpers, do not use directly
 namespace methodHelper {
-
 template <typename T>
 struct Arg {
   const jsi::Value *ptr;

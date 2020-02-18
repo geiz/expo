@@ -1042,90 +1042,66 @@ SIMPLE_NATIVE_METHOD(uniform3i, glUniform3i); // uniform, x, y, z
 SIMPLE_NATIVE_METHOD(uniform4i, glUniform4i); // uniform, x, y, z, w
 
 NATIVE_METHOD(uniform1fv) {
-  return exglUniformv(
-      glUniform1fv, ARG(0, GLuint), 1, ARG(1, jsi::TypedArrayKind::Float32Array).data(runtime));
+  return exglUniformv(glUniform1fv, ARG(0, GLuint), 1, ARG(1, std::vector<float>));
 };
 
 NATIVE_METHOD(uniform2fv) {
-  return exglUniformv(
-      glUniform2fv, ARG(0, GLuint), 2, ARG(1, jsi::TypedArrayKind::Float32Array).data(runtime));
+  return exglUniformv(glUniform2fv, ARG(0, GLuint), 2, ARG(1, std::vector<float>));
 };
 
 NATIVE_METHOD(uniform3fv) {
-  return exglUniformv(
-      glUniform3fv, ARG(0, GLuint), 3, ARG(1, jsi::TypedArrayKind::Float32Array).data(runtime));
+  return exglUniformv(glUniform3fv, ARG(0, GLuint), 3, ARG(1, std::vector<float>));
 };
 
 NATIVE_METHOD(uniform4fv) {
-  return exglUniformv(
-      glUniform4fv, ARG(0, GLuint), 4, ARG(1, jsi::TypedArrayKind::Float32Array).data(runtime));
+  return exglUniformv(glUniform4fv, ARG(0, GLuint), 4, ARG(1, std::vector<float>));
 };
 
 NATIVE_METHOD(uniform1iv) {
-  return exglUniformv(
-      glUniform1iv, ARG(0, GLuint), 1, ARG(1, jsi::TypedArrayKind::Int32Array).data(runtime));
+  return exglUniformv(glUniform1iv, ARG(0, GLuint), 1, ARG(1, std::vector<int32_t>));
 };
 
 NATIVE_METHOD(uniform2iv) {
-  return exglUniformv(
-      glUniform2iv, ARG(0, GLuint), 2, ARG(1, jsi::TypedArrayKind::Int32Array).data(runtime));
+  return exglUniformv(glUniform2iv, ARG(0, GLuint), 2, ARG(1, std::vector<int32_t>));
 };
 
 NATIVE_METHOD(uniform3iv) {
-  return exglUniformv(
-      glUniform3iv, ARG(0, GLuint), 3, ARG(1, jsi::TypedArrayKind::Int32Array).data(runtime));
+  return exglUniformv(glUniform3iv, ARG(0, GLuint), 3, ARG(1, std::vector<int32_t>));
 };
 
 NATIVE_METHOD(uniform4iv) {
-  return exglUniformv(
-      glUniform4iv, ARG(0, GLuint), 4, ARG(1, jsi::TypedArrayKind::Int32Array).data(runtime));
+  return exglUniformv(glUniform4iv, ARG(0, GLuint), 4, ARG(1, std::vector<int32_t>));
 };
 
 NATIVE_METHOD(uniformMatrix2fv) {
   return exglUniformMatrixv(
-      glUniformMatrix2fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      4,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix2fv, ARG(0, GLuint), ARG(1, GLboolean), 4, ARG(2, std::vector<float>));
 }
 
 NATIVE_METHOD(uniformMatrix3fv) {
   return exglUniformMatrixv(
-      glUniformMatrix3fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      9,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix3fv, ARG(0, GLuint), ARG(1, GLboolean), 9, ARG(2, std::vector<float>));
 }
 
 NATIVE_METHOD(uniformMatrix4fv) {
   return exglUniformMatrixv(
-      glUniformMatrix4fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      16,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix4fv, ARG(0, GLuint), ARG(1, GLboolean), 16, ARG(2, std::vector<float>));
 }
 
 NATIVE_METHOD(vertexAttrib1fv) {
-  return exglVertexAttribv(
-      glVertexAttrib1fv, ARG(0, GLuint), ARG(1, jsi::TypedArrayKind::Float32Array).data(runtime));
+  return exglVertexAttribv(glVertexAttrib1fv, ARG(0, GLuint), ARG(1, std::vector<float>));
 }
 
 NATIVE_METHOD(vertexAttrib2fv) {
-  return exglVertexAttribv(
-      glVertexAttrib2fv, ARG(0, GLuint), ARG(1, jsi::TypedArrayKind::Float32Array).data(runtime));
+  return exglVertexAttribv(glVertexAttrib2fv, ARG(0, GLuint), ARG(1, std::vector<float>));
 }
 
 NATIVE_METHOD(vertexAttrib3fv) {
-  return exglVertexAttribv(
-      glVertexAttrib3fv, ARG(0, GLuint), ARG(1, jsi::TypedArrayKind::Float32Array).data(runtime));
+  return exglVertexAttribv(glVertexAttrib3fv, ARG(0, GLuint), ARG(1, std::vector<float>));
 }
 
 NATIVE_METHOD(vertexAttrib4fv) {
-  return exglVertexAttribv(
-      glVertexAttrib4fv, ARG(0, GLuint), ARG(1, jsi::TypedArrayKind::Float32Array).data(runtime));
+  return exglVertexAttribv(glVertexAttrib4fv, ARG(0, GLuint), ARG(1, std::vector<float>));
 }
 
 SIMPLE_NATIVE_METHOD(vertexAttrib1f, glVertexAttrib1f); // index, x
@@ -1146,90 +1122,60 @@ SIMPLE_NATIVE_METHOD(uniform3ui, glUniform3ui); // location, x, y, z
 SIMPLE_NATIVE_METHOD(uniform4ui, glUniform4ui); // location, x, y, z, w
 
 NATIVE_METHOD(uniform1uiv) {
-  return exglUniformv(
-      glUniform1uiv, ARG(0, GLuint), 1, ARG(1, jsi::TypedArrayKind::Uint32Array).data(runtime));
+  return exglUniformv(glUniform1uiv, ARG(0, GLuint), 1, ARG(1, std::vector<uint32_t>));
 };
 
 NATIVE_METHOD(uniform2uiv) {
-  return exglUniformv(
-      glUniform2uiv, ARG(0, GLuint), 2, ARG(1, jsi::TypedArrayKind::Uint32Array).data(runtime));
+  return exglUniformv(glUniform2uiv, ARG(0, GLuint), 2, ARG(1, std::vector<uint32_t>));
 };
 
 NATIVE_METHOD(uniform3uiv) {
-  return exglUniformv(
-      glUniform3uiv, ARG(0, GLuint), 3, ARG(1, jsi::TypedArrayKind::Uint32Array).data(runtime));
+  return exglUniformv(glUniform3uiv, ARG(0, GLuint), 3, ARG(1, std::vector<uint32_t>));
 };
 
 NATIVE_METHOD(uniform4uiv) {
-  return exglUniformv(
-      glUniform4uiv, ARG(0, GLuint), 4, ARG(1, jsi::TypedArrayKind::Uint32Array).data(runtime));
+  return exglUniformv(glUniform4uiv, ARG(0, GLuint), 4, ARG(1, std::vector<uint32_t>));
 };
 
 NATIVE_METHOD(uniformMatrix3x2fv) {
   return exglUniformMatrixv(
-      glUniformMatrix3x2fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      6,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix3x2fv, ARG(0, GLuint), ARG(1, GLboolean), 6, ARG(2, std::vector<float>));
 }
 
 NATIVE_METHOD(uniformMatrix4x2fv) {
   return exglUniformMatrixv(
-      glUniformMatrix4x2fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      8,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix4x2fv, ARG(0, GLuint), ARG(1, GLboolean), 8, ARG(2, std::vector<float>));
 }
 
 NATIVE_METHOD(uniformMatrix2x3fv) {
   return exglUniformMatrixv(
-      glUniformMatrix2x3fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      6,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix2x3fv, ARG(0, GLuint), ARG(1, GLboolean), 6, ARG(2, std::vector<float>));
 }
 
 NATIVE_METHOD(uniformMatrix4x3fv) {
   return exglUniformMatrixv(
-      glUniformMatrix4x3fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      12,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix4x3fv, ARG(0, GLuint), ARG(1, GLboolean), 12, ARG(2, std::vector<float>));
 }
 
 NATIVE_METHOD(uniformMatrix2x4fv) {
   return exglUniformMatrixv(
-      glUniformMatrix2x4fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      8,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix2x4fv, ARG(0, GLuint), ARG(1, GLboolean), 8, ARG(2, std::vector<float>));
 }
 
 NATIVE_METHOD(uniformMatrix3x4fv) {
   return exglUniformMatrixv(
-      glUniformMatrix3x4fv,
-      ARG(0, GLuint),
-      ARG(1, GLboolean),
-      12,
-      ARG(2, jsi::TypedArrayKind::Float32Array).data(runtime));
+      glUniformMatrix3x4fv, ARG(0, GLuint), ARG(1, GLboolean), 12, ARG(2, std::vector<float>));
 }
 
 SIMPLE_NATIVE_METHOD(vertexAttribI4i, glVertexAttribI4i); // index, x, y, z, w
 SIMPLE_NATIVE_METHOD(vertexAttribI4ui, glVertexAttribI4ui); // index, x, y, z, w
 
 NATIVE_METHOD(vertexAttribI4iv) {
-  return exglVertexAttribv(
-      glVertexAttribI4iv, ARG(0, GLuint), ARG(1, jsi::TypedArrayKind::Int32Array).data(runtime));
+  return exglVertexAttribv(glVertexAttribI4iv, ARG(0, GLuint), ARG(1, std::vector<int32_t>));
 }
 
 NATIVE_METHOD(vertexAttribI4uiv) {
-  return exglVertexAttribv(
-      glVertexAttribI4uiv, ARG(0, GLuint), ARG(1, jsi::TypedArrayKind::Uint32Array).data(runtime));
+  return exglVertexAttribv(glVertexAttribI4uiv, ARG(0, GLuint), ARG(1, std::vector<uint32_t>));
 }
 
 SIMPLE_NATIVE_METHOD(
